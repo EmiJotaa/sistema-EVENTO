@@ -1,40 +1,34 @@
 package com.devmj.sistemaEvento.entidades;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_participante")
-public class Participante {
-	
+@Table(name = "tb_categoria")
+public class Categoria {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	private String descricao;
 	
-	private String nome;
+	@OneToMany(mappedBy = "categoria")
+	private List<Atividade> atividades = new ArrayList<>();
 	
-	@Column(unique = true)
-	private String email;
-	
-	@ManyToMany(mappedBy = "participantes")
-	private Set<Atividade> atividades = new HashSet<>();
-	
-	public Participante() {
+	public Categoria() {
 	}
 
-	public Participante(Integer id, String nome, String email) {
+	public Categoria(Integer id, String descricao, Atividade atividade) {
 		this.id = id;
-		this.nome = nome;
-		this.email = email;
+		this.descricao = descricao;
 	}
 
 	public Integer getId() {
@@ -45,23 +39,15 @@ public class Participante {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	public Set<Atividade> getAtividades() {
+	public List<Atividade> getAtividades(){
 		return atividades;
 	}
 
@@ -78,7 +64,7 @@ public class Participante {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Participante other = (Participante) obj;
+		Categoria other = (Categoria) obj;
 		return Objects.equals(id, other.id);
 	}
 }

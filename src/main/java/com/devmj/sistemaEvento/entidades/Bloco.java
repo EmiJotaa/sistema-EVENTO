@@ -1,5 +1,6 @@
 package com.devmj.sistemaEvento.entidades;
 
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -13,28 +14,30 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tb_participante")
-public class Participante {
-	
+@Table(name = "tb_bloco")
+public class Bloco {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	private String nome;
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	private Instant inicio;
 	
-	@Column(unique = true)
-	private String email;
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	private Instant fim;
 	
-	@ManyToMany(mappedBy = "participantes")
+	@ManyToMany(mappedBy = "blocos")
 	private Set<Atividade> atividades = new HashSet<>();
+
 	
-	public Participante() {
+	public Bloco() {
 	}
 
-	public Participante(Integer id, String nome, String email) {
+	public Bloco(Integer id, Instant inicio, Instant fim, Atividade atividade) {
 		this.id = id;
-		this.nome = nome;
-		this.email = email;
+		this.inicio = inicio;
+		this.fim = fim;
 	}
 
 	public Integer getId() {
@@ -45,22 +48,22 @@ public class Participante {
 		this.id = id;
 	}
 
-	public String getNome() {
-		return nome;
+	public Instant getInicio() {
+		return inicio;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
+	public void setInicio(Instant inicio) {
+		this.inicio = inicio;
 	}
 
-	public String getEmail() {
-		return email;
+	public Instant getFim() {
+		return fim;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setFim(Instant fim) {
+		this.fim = fim;
 	}
-	
+
 	public Set<Atividade> getAtividades() {
 		return atividades;
 	}
@@ -78,7 +81,7 @@ public class Participante {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Participante other = (Participante) obj;
+		Bloco other = (Bloco) obj;
 		return Objects.equals(id, other.id);
 	}
 }
